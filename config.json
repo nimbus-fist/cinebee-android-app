@@ -1,0 +1,8 @@
+{
+  "app_active": true,
+  "app_version": "v 3.9",
+  "target_url": "https://moviesbooster.rf.gd/",
+  "ad_url": "https://example.com/ad-page",
+  "svg_url": "https://raw.githubusercontent.com/nimbus-fist/cinebee-android-app/main/assets/logo.svg",
+  "notice_message": "App no longer available. Tap below to download the latest version."
+}
