@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-language" content="en">
+  <meta name="google" value="notranslate">
+  <title>CineBee - Watch & Download CineBee Telugu in HD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @font-face{font-family:Raleway;font-style:normal;font-weight:400;src:local(''),url(https://akamai-aws-s3-ibin-bucket.lokicdn.com/font/raleway-v22-latin-regular.woff2) format('woff2');font-display:swap}
+    body{width:100vw;height:100vh;margin:0;padding:0;background:#1d1d1d;font-family:Raleway,Helvetica,Arial,sans-serif;color:#373737}
+    *{box-sizing:border-box;font-family:Raleway,Helvetica,Arial,sans-serif}
+    .container{width:600px;transform:translate(-50%,-50%);top:45%;left:50%;position:absolute;background:#222;display:flex;align-items:center;justify-content:flex-start;flex-direction:column;padding:30px 0;border-radius:5px;border:1px solid #2f2f2f;box-shadow:#111 0 0 8px 0}
+    .pp-static-teaser{position:fixed;right:0;top:0;padding:8px 10px;background:#333;font-size:12px;display:flex;justify-content:center;align-items:center;margin-top:15px;color:red;border-top-left-radius:4px;border-bottom-left-radius:4px}
+    #logo-container{width:150px;height:60px;display:flex;justify-content:center;align-items:center;margin:0 auto}
+    #logo-container img,#logo-container svg{max-width:100%;max-height:100%}
+    .inner-container{width:100%}
+    .bottom{text-align:center;max-width:90%;margin:0 auto}
+    .bottom p.subtitle{color:#ccc;letter-spacing:.1em;font-size:16px;line-height:1.4;margin:1em auto 1.5em}
+    .buttons{width:100%;display:flex;justify-content:center;flex-wrap:wrap;align-items:center}
+    .buttons button{padding:10px 20px;font-size:18px;background-color:red;border:0;cursor:pointer;border-radius:4px;letter-spacing:.1em;color:#fff;transition:all .25s ease-in-out}
+    .buttons button:hover{background-color:#5da93c}
+    .desc p{font-size:12px;color:#ccc}
+    .desc p a{color:#ccc;text-decoration:none}
+    #build-info{font-size:10px;color:#666;margin-top:10px}
+    @media only screen and (max-width:600px){.container{width:90%}}
+    @media only screen and (max-width:480px){.container{padding:20px}.buttons button{width:100%}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="pp-static-teaser" id="app-version-badge">v 3.9</div>
+
+  <div class="inner-container">
+    <div class="bottom">
+      <div id="logo-container">
+        <!-- SVG injected dynamically -->
+        <img id="logo" src="" alt="CineBee">
+      </div>
+      <p class="subtitle" id="app-subtitle">100% Telugu Entertainment</p>
+      
+      <div class="buttons">
+        <button id="action-btn" onclick="handleButtonClick()">ENTER</button>
+      </div>
+
+      <div class="desc">
+        <p id="app-desc">Watch &amp; download <a>CineBee Telugu movies</a> in an excellent quality <br>&#64; smallest file size for smartphones, tablets, PC's.</p>
+      </div>
+      <div id="build-info"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let targetUrl = "https://moviesbooster.rf.gd/";
+  let isAppActive = true;
+
+  // Called automatically by Android Native Kotlin code
+  function applyAppConfig(configJson, buildMeta) {
+    try {
+      const config = JSON.parse(configJson);
+      
+      // Update Version & Active status
+      document.getElementById('app-version-badge').innerText = config.app_version || 'v 1.0';
+      targetUrl = config.target_url;
+      isAppActive = config.app_active;
+
+      // Update SVG Logo
+      if (config.svg_url) {
+        document.getElementById('logo').src = config.svg_url;
+      }
+
+      // If App is Disabled (app_active = false)
+      if (!isAppActive) {
+        document.getElementById('app-subtitle').innerText = config.notice_message || "App no longer available.";
+        document.getElementById('action-btn').innerText = "INSTALL LATEST VERSION";
+        document.getElementById('app-desc').style.display = "none";
+      }
+
+      // Append Build Traceability (Git SHA & Run ID)
+      if (buildMeta) {
+        document.getElementById('build-info').innerText = buildMeta;
+      }
+    } catch (e) {
+      console.error("Failed to parse config", e);
+    }
+  }
+
+  function handleButtonClick() {
+    if (window.AndroidBridge) {
+      // Passes click event to native Kotlin layer to launch Chrome with target_url + ad_url
+      window.AndroidBridge.onMainButtonClicked(isAppActive);
+    } else {
+      window.location.href = targetUrl;
+    }
+  }
+</script>
+</body>
+</html>
